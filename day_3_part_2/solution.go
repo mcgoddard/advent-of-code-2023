@@ -38,10 +38,9 @@ func main() {
 	lines := strings.Split(content_string, "\n")
 	// For each number
 	output := 0
-	for i := 0; i < len(lines); i++ {
-		line := lines[i]
-		for j := 0; j < len(line); j++ {
-			char := string(line[j])
+	for i, line := range lines {
+		for j, char := range line {
+			char := string(char)
 			if char == "*" {
 				// Look for numbers around the *
 				numbers := []int{}

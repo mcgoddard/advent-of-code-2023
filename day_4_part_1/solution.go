@@ -31,12 +31,14 @@ func main() {
 		lineHeader := strings.Split(line, ":")
 		numbersSplit := strings.Split(lineHeader[1], "|")
 		winners := make(map[int]void)
+		// Build a set of winning numbers
 		for _, winner := range strings.Split(numbersSplit[0], " ") {
 			if winner != "" {
 				winnerInt, _ := strconv.Atoi(winner)
 				winners[winnerInt] = member
 			}
 		}
+		// Check each of our numbers against the winners set
 		for _, number := range strings.Split(numbersSplit[1], " ") {
 			if number != "" {
 				numberInt, _ := strconv.Atoi(number)
@@ -52,8 +54,6 @@ func main() {
 		} else if ticketCount > 1 {
 			ticketValue = int(math.Pow(2, float64(ticketCount-1)))
 		}
-		// fmt.Println("Ticket count: ", ticketCount)
-		// fmt.Println("Ticket value: ", ticketValue)
 		output += ticketValue
 	}
 	// Print the result

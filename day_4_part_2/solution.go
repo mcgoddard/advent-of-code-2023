@@ -24,8 +24,9 @@ func main() {
 	content_string := string(content)
 	cardCounts := make(map[int]int)
 	lines := strings.Split(content_string, "\n")
-	// Initialise counts at 1
-	for i, _ := range lines {
+	output := 0
+	// Initialise counts at 1 for all cards
+	for i := range lines {
 		cardCounts[i+1] = 1
 	}
 	// Read the lines
@@ -35,6 +36,7 @@ func main() {
 		header := strings.Split(lineHeader[0], " ")
 		cardId, _ := strconv.Atoi(header[len(header)-1])
 		numbersSplit := strings.Split(lineHeader[1], "|")
+		// Build a set of winning numbers
 		winners := make(map[int]void)
 		for _, winner := range strings.Split(numbersSplit[0], " ") {
 			if winner != "" {
@@ -42,6 +44,7 @@ func main() {
 				winners[winnerInt] = member
 			}
 		}
+		// Check each of our numbers against the winners set
 		for _, number := range strings.Split(numbersSplit[1], " ") {
 			if number != "" {
 				numberInt, _ := strconv.Atoi(number)
@@ -50,18 +53,14 @@ func main() {
 				}
 			}
 		}
+		// Bump each of the winning tickets (as many times as we have of this ticket)
 		if ticketCount > 0 {
-			for i := 0; i < cardCounts[cardId]; i++ {
-				for j := 1; j <= ticketCount && cardId+j <= len(lines); j++ {
-					cardCounts[cardId+j] += 1
-				}
+			for j := 1; j <= ticketCount && cardId+j <= len(lines); j++ {
+				cardCounts[cardId+j] += cardCounts[cardId]
 			}
 		}
-	}
-	// Add up card counts
-	output := 0
-	for _, count := range cardCounts {
-		output += count
+		// Add our current card count to the total
+		output += cardCounts[cardId]
 	}
 	// Print the result
 	fmt.Println(output)

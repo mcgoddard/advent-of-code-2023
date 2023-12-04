@@ -40,10 +40,8 @@ func main() {
 	// For each number
 	nonSymbols := []string{".", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"}
 	output := 0
-	for i := 0; i < len(lines); i++ {
-		line := lines[i]
-		for j := 0; j < len(line); j++ {
-			char := line[j]
+	for i, line := range lines {
+		for j, char := range line {
 			if _, err := strconv.Atoi(string(char)); err == nil {
 				// Extract the complete number
 				startIndex := j
@@ -74,7 +72,6 @@ func main() {
 					}
 				}
 				if symbolFound {
-					fmt.Println("Part number found: ", number)
 					output += number
 				}
 			}
