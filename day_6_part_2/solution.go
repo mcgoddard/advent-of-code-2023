@@ -3,12 +3,15 @@ package main
 import (
 	"flag"
 	"fmt"
+	"math"
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func main() {
+	start := time.Now()
 	exampleFlagPtr := flag.Bool("example", false, "Use the example file if set")
 	flag.Parse()
 	// Read input file
@@ -24,7 +27,6 @@ func main() {
 		distance int
 	}
 	lines := strings.Split(content_string, "\n")
-	output := 0
 	times := strings.Split(lines[0], " ")
 	filteredTimes := make([]string, 0)
 	for _, time := range times {
@@ -54,11 +56,18 @@ func main() {
 	race := Race{time: finalTime, distance: finalDistance}
 	fmt.Println("Race", race)
 	// Calculate output
-	for buttonHeld := 0; buttonHeld < race.time; buttonHeld++ {
-		if buttonHeld*(race.time-buttonHeld) > race.distance {
-			output++
-		}
-	}
+	quadratic := int(math.Sqrt(math.Pow(float64(race.time), 2) - float64(4*race.distance)))
+	low := ((-1 * race.time) - quadratic) / 2
+	high := ((-1 * race.time) + quadratic) / 2
+	output := high - low + 1
+	// output := 0
+	// for buttonHeld := 0; buttonHeld < race.time; buttonHeld++ {
+	// 	if buttonHeld*(race.time-buttonHeld) > race.distance {
+	// 		output++
+	// 	}
+	// }
 	// Print the result
 	fmt.Println(output)
+	elapsed := time.Since(start)
+	fmt.Println("Took ", elapsed)
 }
