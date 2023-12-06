@@ -9,3 +9,8 @@ go run .
 ```
 
 to get the solution.
+
+Alternatively to run against the example input use:
+```
+go run . -example
+```
