@@ -111,7 +111,7 @@ func convertToValue(character byte) int {
 	}
 	valueMap := map[byte]int{
 		'T': 10,
-		'J': 11,
+		'J': 1,
 		'Q': 12,
 		'K': 13,
 		'A': 14,
@@ -128,6 +128,7 @@ func determineHandType(hand string) int {
 			counts[letter]++
 		}
 	}
+	jokerCount := counts['J']
 	if len(counts) == 1 {
 		return fiveOfAKind
 	} else if len(counts) == 2 {
@@ -138,8 +139,14 @@ func determineHandType(hand string) int {
 			}
 		}
 		if minCount > 1 {
+			if jokerCount >= 1 {
+				return fiveOfAKind
+			}
 			return fullHouse
 		} else {
+			if jokerCount >= 1 {
+				return fiveOfAKind
+			}
 			return fourOfAKind
 		}
 	} else if len(counts) == 3 {
@@ -150,11 +157,25 @@ func determineHandType(hand string) int {
 			}
 		}
 		if maxCount > 2 {
+			if jokerCount == 1 || jokerCount == 3 {
+				return fourOfAKind
+			}
 			return threeOfAKind
 		} else {
+			if jokerCount == 1 {
+				return fullHouse
+			} else if jokerCount == 2 {
+				return fourOfAKind
+			}
 			return twoPair
 		}
 	} else if len(counts) == 4 {
+		if jokerCount > 0 {
+			return threeOfAKind
+		}
+		return onePair
+	}
+	if jokerCount > 0 {
 		return onePair
 	}
 	return highCard
