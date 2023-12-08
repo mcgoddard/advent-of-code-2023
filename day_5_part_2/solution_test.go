@@ -10,20 +10,24 @@ func TestNoOverlap(t *testing.T) {
 		{
 			Range{
 				start: 6,
-				end:   10,
+				end:   11,
+			},
+			Range{
+				start: 6,
+				end:   11,
 			},
 		},
 	}
 	ranges := []Range{
 		{
 			start: 1,
-			end:   5,
+			end:   6,
 		},
 	}
 	newRanges := splitRanges(list, ranges)
 	expected := Range{
 		start: 1,
-		end:   5,
+		end:   6,
 	}
 	if newRanges[0] != expected {
 		t.Fatalf("Incorrect newRanges: %q", newRanges)
@@ -35,25 +39,25 @@ func TestExactOverlap(t *testing.T) {
 		{
 			Range{
 				start: 1,
-				end:   5,
+				end:   6,
 			},
 			Range{
 				start: 6,
-				end:   10,
+				end:   11,
 			},
 		},
 	}
 	ranges := []Range{
 		{
 			start: 1,
-			end:   5,
+			end:   6,
 		},
 	}
 	newRanges := splitRanges(list, ranges)
 	expected := []Range{
 		{
 			start: 6,
-			end:   10,
+			end:   11,
 		},
 	}
 	fmt.Println("NewRanges: ", newRanges)
@@ -72,29 +76,29 @@ func TestPartialOverlapStart(t *testing.T) {
 		{
 			Range{
 				start: 1,
-				end:   5,
+				end:   6,
 			},
 			Range{
 				start: 10,
-				end:   15,
+				end:   16,
 			},
 		},
 	}
 	ranges := []Range{
 		{
 			start: 4,
-			end:   7,
+			end:   8,
 		},
 	}
 	newRanges := splitRanges(list, ranges)
 	expected := []Range{
 		{
 			start: 13,
-			end:   14,
+			end:   15,
 		},
 		{
 			start: 6,
-			end:   7,
+			end:   8,
 		},
 	}
 	fmt.Println("NewRanges: ", newRanges)
@@ -113,29 +117,29 @@ func TestPartialOverlapEnd(t *testing.T) {
 		{
 			Range{
 				start: 1,
-				end:   5,
+				end:   6,
 			},
 			Range{
 				start: 11,
-				end:   15,
+				end:   16,
 			},
 		},
 	}
 	ranges := []Range{
 		{
 			start: 4,
-			end:   7,
+			end:   8,
 		},
 	}
 	newRanges := splitRanges(list, ranges)
 	expected := []Range{
 		{
 			start: 14,
-			end:   15,
+			end:   16,
 		},
 		{
 			start: 6,
-			end:   7,
+			end:   8,
 		},
 	}
 	fmt.Println("NewRanges: ", newRanges)
@@ -154,25 +158,25 @@ func TestExactSubrangeOverlap(t *testing.T) {
 		{
 			Range{
 				start: 1,
-				end:   5,
+				end:   6,
 			},
 			Range{
 				start: 6,
-				end:   10,
+				end:   11,
 			},
 		},
 	}
 	ranges := []Range{
 		{
 			start: 2,
-			end:   4,
+			end:   5,
 		},
 	}
 	newRanges := splitRanges(list, ranges)
 	expected := []Range{
 		{
 			start: 7,
-			end:   9,
+			end:   10,
 		},
 	}
 	fmt.Println("NewRanges: ", newRanges)
@@ -191,33 +195,33 @@ func TestExactSuperRangeOverlap(t *testing.T) {
 		{
 			Range{
 				start: 2,
-				end:   9,
+				end:   10,
 			},
 			Range{
 				start: 12,
-				end:   19,
+				end:   20,
 			},
 		},
 	}
 	ranges := []Range{
 		{
 			start: 1,
-			end:   10,
+			end:   11,
 		},
 	}
 	newRanges := splitRanges(list, ranges)
 	expected := []Range{
 		{
-			start: 1,
-			end:   1,
+			start: 12,
+			end:   20,
 		},
 		{
-			start: 12,
-			end:   19,
+			start: 1,
+			end:   2,
 		},
 		{
 			start: 10,
-			end:   10,
+			end:   11,
 		},
 	}
 	fmt.Println("NewRanges: ", newRanges)
@@ -236,50 +240,51 @@ func TestMultipleOverlaps(t *testing.T) {
 		{
 			Range{
 				start: 2,
-				end:   9,
+				end:   10,
 			},
 			Range{
 				start: 22,
-				end:   29,
+				end:   30,
 			},
 		},
 		{
 			Range{
 				start: 12,
-				end:   19,
+				end:   20,
 			},
 			Range{
 				start: 32,
-				end:   39,
+				end:   40,
 			},
 		},
 	}
 	ranges := []Range{
 		{
 			start: 1,
-			end:   20,
+			end:   21,
 		},
 	}
 	newRanges := splitRanges(list, ranges)
 	expected := []Range{
 		{
-			start: 1,
-			end:   1,
-		},
-		{
 			start: 22,
-			end:   29,
-		},
-		{
-			start: 10,
-			end:   11,
+			end:   30,
 		},
 		{
 			start: 32,
-			end:   39,
-		}, {
+			end:   40,
+		},
+		{
+			start: 1,
+			end:   2,
+		},
+		{
+			start: 10,
+			end:   12,
+		},
+		{
 			start: 20,
-			end:   20,
+			end:   21,
 		},
 	}
 	fmt.Println("NewRanges: ", newRanges)
