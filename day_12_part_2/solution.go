@@ -87,8 +87,9 @@ func main() {
 	}
 	// Calculate counts
 	output := 0
+	countCached = memoize(count)
 	for _, entry := range entries {
-		entryCount := count(entry.Conditions, entry.Counts)
+		entryCount := countCached.call(entry.Conditions, entry.Counts)
 		output += entryCount
 	}
 	// Print the result
@@ -96,6 +97,8 @@ func main() {
 }
 
 var cache = make(map[string]int)
+
+var countCached *memoized
 
 func count(conditions []int, counts []int) int {
 	entry := Entry{
@@ -122,40 +125,26 @@ func count(conditions []int, counts []int) int {
 		}
 	}
 	if brokenCount > total || notWorkingCount < total {
-		result := 0
-		cache[key] = result
-		return result
+		return 0
 	}
 	if total == 0 {
-		result := 1
-		cache[key] = result
-		return result
+		return 1
 	}
 	if conditions[0] == working {
-		result := count(conditions[1:], counts)
-		cache[key] = result
-		return result
+		return countCached.call(conditions[1:], counts)
 	}
 	if conditions[0] == broken {
 		length := counts[0]
 		if matchBeginning(conditions, length) {
 			if length == len(conditions) {
-				result := 1
-				cache[key] = result
-				return result
+				return 1
 			}
-			result := count(conditions[length+1:], counts[1:])
-			cache[key] = result
-			return result
+			return countCached.call(conditions[length+1:], counts[1:])
 		}
-		result := 0
-		cache[key] = result
-		return result
+		return 0
 	}
 	newConditions := append([]int{broken}, conditions[1:]...)
-	result := count(conditions[1:], counts) + count(newConditions, counts)
-	cache[key] = result
-	return result
+	return countCached.call(conditions[1:], counts) + countCached.call(newConditions, counts)
 }
 
 func matchBeginning(conditions []int, length int) bool {
