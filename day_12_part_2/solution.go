@@ -96,20 +96,9 @@ func main() {
 	fmt.Println(output)
 }
 
-var cache = make(map[string]int)
-
 var countCached *memoized
 
 func count(conditions []int, counts []int) int {
-	entry := Entry{
-		Conditions: conditions,
-		Counts:     counts,
-	}
-	keyBytes, _ := json.Marshal(entry)
-	key := string(keyBytes)
-	if v, exists := cache[key]; exists {
-		return v
-	}
 	total := 0
 	for _, block := range counts {
 		total += block
