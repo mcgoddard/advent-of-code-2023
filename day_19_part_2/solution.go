@@ -104,24 +104,7 @@ func AcceptPart(part Part, workflows map[string]Workflow, currentWorkflow string
 			result += AcceptPart(part, workflows, rule.outcome)
 		}
 		// Test rule
-		newPart := Part{
-			x: Range{
-				start: part.x.start,
-				end:   part.x.end,
-			},
-			m: Range{
-				start: part.m.start,
-				end:   part.m.end,
-			},
-			a: Range{
-				start: part.a.start,
-				end:   part.a.end,
-			},
-			s: Range{
-				start: part.s.start,
-				end:   part.s.end,
-			},
-		}
+		newPart := part
 		greaterThan := rule.operator == ">"
 		if greaterThan {
 			if rule.category == "x" {
